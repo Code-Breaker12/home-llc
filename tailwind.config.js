@@ -5,7 +5,11 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        abhaya: ['Abhaya Libre'],
+      },
+    },
   },
     plugins: [require('@tailwindcss/typography'), require('daisyui')],
 }

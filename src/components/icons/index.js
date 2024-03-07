@@ -81,14 +81,12 @@ export const SearchIcon = () => (
         <circle cx="7.72728" cy="7.54545" r="6.54545" stroke="#003339" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
         <path d="M17 16.8182L12.3636 12.1818" stroke="#003339" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
     </svg>
-
 );
 export const BurgerMenuIcon = () => (
     <svg width="20" height="10" viewBox="0 0 20 10" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M1 1.5H19" stroke="#003339" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
         <path d="M1 8.5H14.1426" stroke="#003339" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
     </svg>
-
 );
 export const DropdownIcon = () => (
     <svg width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -96,8 +94,8 @@ export const DropdownIcon = () => (
     </svg>
 
 );
-export const CrossIcon = () => (
-    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+export const CrossIcon = (props) => (
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" onClick={props.onClick} className="cursor-pointer">
         <path d="M1.625 20.3742L20.375 1.62417" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
         <path d="M20.375 20.3742L1.625 1.62417" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
     </svg>
