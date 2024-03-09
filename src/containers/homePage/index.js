@@ -56,7 +56,7 @@ const HomePage = () => {
                         // console.log(`Country: ${country}`);
     
                         const weatherData = await GetWeatherData(latitude, longitude, country);
-                        console.log(weatherData, 'WEATHER DATA')
+                        // console.log(weatherData, 'WEATHER DATA')
                         const mappedWeatherData = cloudData(weatherData);
                         setMapWeatherData(mappedWeatherData)
                         const hourlyWeatherData = await fetchHourlyWeatherData(latitude, longitude);
