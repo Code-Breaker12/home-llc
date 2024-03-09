@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import "./styles.css";
-import { CrossIcon, BurgerMenuIcon, SearchIcon, Cloudy } from '../../components/icons';
+import { CrossIcon, BurgerMenuIcon, SearchIcon, Cloudy, LocationIcon } from '../../components/icons';
 import Button from '../../components/button';
 import HeadStaticIcons from '../../components/head';
 import TinyBitmap from "./tiny-bitmap.png"
@@ -11,13 +11,16 @@ import { cloudData } from '../../data/cloud-data';
 import { formattedDate } from '../../data/date';
 import GetWeatherData from '../../services/get-weather-data';
 import FetchAddress from '../../services/fetch-address';
+import fetchHourlyWeatherData from '../../services/fetch-hourly-data';
 
 const HomePage = () => {
     const [displayHomePage, setDisplayHomePage] = useState(true);
     const [displayWidgetPage, setDisplayWidgetPage] = useState(false);
     const [displayInputField, setDisplayInputField] = useState(false);
     const [inputValue, setInputValue] = useState('');
-    const [country, setCountry] = useState('')
+    const [country, setCountry] = useState('');
+    const [mapWeatherData, setMapWeatherData] = useState('');
+
 
     const onClickCancel = () => {
         setDisplayHomePage(false);
@@ -33,7 +36,7 @@ const HomePage = () => {
     const handleInputChange = async (e) => {
         setInputValue(e.target.value);
         const data = await Current(inputValue);
-        console.log('Homepage data', data);
+        // console.log('Homepage data', data);
         const mappedData = cloudData(data);
         console.log(mappedData);
     }
@@ -42,7 +45,7 @@ const HomePage = () => {
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(async (position) => {
                 const { latitude, longitude } = position.coords;
-                console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+                // console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
                 try {
                     const addressData = await FetchAddress(latitude, longitude);
                     // console.log(addressData, '++++++++ADDRESS DATA++++++++');
@@ -50,11 +53,15 @@ const HomePage = () => {
                     if (addressData && addressData.status === 'OK') {
                         const country = addressData.results[0].address_components.find(component => component.types.includes('country')).long_name;
                         setCountry(country);
-                        console.log(`Country: ${country}`);
+                        // console.log(`Country: ${country}`);
     
                         const weatherData = await GetWeatherData(latitude, longitude, country);
+                        console.log(weatherData, 'WEATHER DATA')
                         const mappedWeatherData = cloudData(weatherData);
-                        console.log(weatherData, '--------WEATHER DATA---------');
+                        setMapWeatherData(mappedWeatherData)
+                        const hourlyWeatherData = await fetchHourlyWeatherData(latitude, longitude);
+                        
+                        // console.log(hourlyWeatherData, '-------- HOURLY WEATHER DATA---------');
                     } else {
                         console.error('Error fetching address:', addressData);
                     }
@@ -82,14 +89,15 @@ const HomePage = () => {
                         <CrossIcon onClick={onClickCancel} />
                         <Button />
                     </div>
-                    <div class="font-abhaya font-bold text-5xl text-left text-white mt-24 ml-8 tracking-wide">
+                    <div className="font-abhaya font-bold text-5xl text-left text-white mt-24 ml-8 tracking-wide">
+                    <LocationIcon className="mr-4"/>
                         {country}
-                        {/* New York,<span class="block">United States</span> */}
+                        {/* New York,<span className="block">United States</span> */}
                     </div>
                 </div>
             </div>}
             {displayWidgetPage && <div className='homepage-container bg-white'>
-                <div className='border-2 border-red-400 h-100' style={{ height: "100%" }}>
+                <div className='h-100' style={{ height: "100%" }}>
                     <HeadStaticIcons black />
                     <div className='flex w-90 justify-between pr-10 pl-8 mt-6 place-items-center'>
                         <BurgerMenuIcon onClick={onClickBurgerMenu} />
@@ -118,7 +126,7 @@ const HomePage = () => {
                         <Cloud />
                     </section>
                     <section className='ml-8 mr-10 mt-10'>
-                        <AdditionalInfo />
+                        <AdditionalInfo mapWeatherData={mapWeatherData}/>
                     </section>
                 </div>
             </div>}
