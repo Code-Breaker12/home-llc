@@ -38,7 +38,7 @@ const HomePage = () => {
         const data = await Current(inputValue);
         // console.log('Homepage data', data);
         const mappedData = cloudData(data);
-        console.log(mappedData);
+        // console.log(mappedData);
     }
 
     const fetchWeatherData = async () => {
